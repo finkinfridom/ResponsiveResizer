@@ -15,6 +15,7 @@
   "homepage": "https://github.com/finkinfridom/ResponsiveResizer#readme",
   "devDependencies": {
     "grunt-cli": "^1.2.0",
+    "grunt-contrib-cssmin": "^2.2.1",
     "grunt-contrib-jshint": "^1.1.0",
     "grunt-contrib-uglify": "^3.0.1",
     "grunt-contrib-watch": "^1.0.0",

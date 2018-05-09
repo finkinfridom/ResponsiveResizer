@@ -36,6 +36,7 @@
                 var objKeys = Object.keys(viewports);
                 var keysLength = objKeys.length;
                 var _rszDom = document.createElement('select');
+                _rszDom.className = "__resizer__";
                 _rszDom.id = ['rsz', Date.now()].join('_');
                 var htmlBuf = [];
                 for (var i = 0; i < keysLength; i++) {
@@ -50,5 +51,5 @@
         };
     };
     var rsz = resizer();
-    return window.resizerResponsive = rsz;
+    window.resizerResponsive = rsz;
 }(window, document));
