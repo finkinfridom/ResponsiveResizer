@@ -1,0 +1,23 @@
+{
+  "name": "responsiveresizer",
+  "version": "1.0.0",
+  "description": "JS snippet to allow easy window resize based on responsive viewports",
+  "main": "sample/index.js",
+  "scripts": {
+    "start": "node_modules\\.bin\\http-server"
+  },
+  "repository": "git+https://github.com/finkinfridom/ResponsiveResizer.git",
+  "author": "Alberto Maghini",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/finkinfridom/ResponsiveResizer/issues"
+  },
+  "homepage": "https://github.com/finkinfridom/ResponsiveResizer#readme",
+  "devDependencies": {
+    "grunt-cli": "^1.2.0",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-uglify": "^3.0.1",
+    "grunt-contrib-watch": "^1.0.0",
+    "http-server": "^0.11.1"
+  }
+}
