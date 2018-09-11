@@ -1,7 +1,7 @@
 (function(w, d) {
   var resizer = function() {
     var viewports = {};
-    var _frameReference;
+    var _wrapReference;
     var onEvent = function(element, eventName, eventCallback) {
       if (element.addEventListener) {
         element.addEventListener(eventName, eventCallback, false);
@@ -12,36 +12,51 @@
     var onChange = function(event) {
       var target = event.target;
       var frameWidth = target.value || screen.availWidth;
+      var text = target.selectedOptions[0].text;
       if (frameWidth > screen.availWidth) {
         frameWidth = screen.availWidth;
+        text = "MAX";
       }
-      _frameReference.setAttribute("width", frameWidth);
+      _wrapReference.querySelector("iframe").setAttribute("width", frameWidth);
+      _wrapReference.setAttribute("style", "width:" + frameWidth + "px");
+      _wrapReference.querySelector("span").innerText = [
+        text,
+        "=> ",
+        frameWidth
+      ].join("");
     };
     return {
-      frameReference: undefined,
+      wrapReference: undefined,
       initViewports: function(config) {
         if (w.location.search && w.location.search.indexOf("noresizer=true")) {
           return;
         }
-        var body = d.querySelector("body");
-        var frameSelector = config.rootElement + "_frame";
-        body.innerHTML =
-          "<iframe marginheight='0' marginwidth='0' align='middle' frameborder='0' class='__resizer__--frame' id='" +
-          frameSelector +
-          "' src='" +
-          w.location.pathname +
-          "?noresizer=true' height='" +
-          screen.availHeight +
-          "'></iframe>";
-        _frameReference = d.getElementById(frameSelector);
-        this.frameReference = _frameReference;
         var viewportsObject = config.viewports;
+        var body = d.querySelector("body");
+        var wrapSelector = config.rootElement + "_wrap";
+        var _rszWrap = d.createElement("div");
+        _rszWrap.id = wrapSelector;
+        _rszWrap.className = "__resizer__--wrap";
+        var _rszFrame = d.createElement("iframe");
+        _rszFrame.setAttribute("marginheight", 0);
+        _rszFrame.setAttribute("marginwidth", 0);
+        _rszFrame.setAttribute("frameborder", 0);
+        _rszFrame.className = "__resizer__--frame";
+        _rszFrame.setAttribute("src", w.location.pathname + "?noresizer=true");
+        _rszFrame.setAttribute("height", screen.availHeight);
+        var _rszSelect = d.createElement("select");
+        _rszSelect.className = "__resizer__--select";
+        var _rszLabel = d.createElement("span");
+        _rszLabel.className = "__resizer__--info";
         viewports = Object.assign({}, viewportsObject);
         var objKeys = Object.keys(viewports);
         var keysLength = objKeys.length;
-        var _rszDom = document.createElement("select");
-        _rszDom.className = "__resizer__";
-        _rszDom.id = ["_rsz", Date.now()].join("_");
+        if (keysLength) {
+          var firstWidth = viewports[objKeys[0]];
+          _rszFrame.setAttribute("width", firstWidth);
+          _rszWrap.setAttribute("style", "width:" + firstWidth + "px");
+          _rszLabel.innerText = [objKeys[0], "=> ", firstWidth].join("");
+        }
         var htmlBuf = [];
         for (var i = 0; i < keysLength; i++) {
           var key = objKeys[i];
@@ -53,9 +68,15 @@
             "</option>"
           );
         }
-        _rszDom.innerHTML = htmlBuf.join("");
-        onEvent(_rszDom, "change", onChange);
-        body.appendChild(_rszDom);
+        _rszSelect.innerHTML = htmlBuf.join("");
+        _rszWrap.appendChild(_rszSelect);
+        _rszWrap.appendChild(_rszLabel);
+        _rszWrap.appendChild(_rszFrame);
+        body.innerHTML = _rszWrap.outerHTML;
+        _wrapReference = d.getElementById(wrapSelector);
+        _rszSelect = _wrapReference.querySelector("select");
+        onEvent(_rszSelect, "change", onChange);
+        this.wrapReference = _wrapReference;
       }
     };
   };
