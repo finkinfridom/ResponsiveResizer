@@ -1,5 +1,14 @@
 .__resizer__ {
- position: absolute;   
- top:1%;
- right:1%;
+  position: absolute;
+  top: 1%;
+  right: 1%;
+}
+.__resizer__--frame {
+  border: 0;
+  display: block;
+}
+
+.__resizer__--frame body {
+  margin: 0;
+  padding: 0;
 }
