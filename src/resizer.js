@@ -24,8 +24,7 @@
           return;
         }
         var body = d.querySelector("body");
-        var frameSelector = rootElement + "_frame";
-        var rootElement = config.rootElement || "_rsz-root";
+        var frameSelector = config.rootElement + "_frame";
         body.innerHTML =
           "<iframe marginheight='0' marginwidth='0' align='middle' frameborder='0' class='__resizer__--frame' id='" +
           frameSelector +
