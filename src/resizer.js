@@ -9,12 +9,20 @@
         element.attachEvent("on" + eventName, eventCallback);
       }
     };
+    var onResize = function() {
+      _wrapReference
+        .querySelector("iframe")
+        .setAttribute(
+          "height",
+          w.innerHeight - _wrapReference.querySelector("iframe").offsetTop - 2
+        );
+    };
     var onChange = function(event) {
       var target = event.target;
-      var frameWidth = target.value || screen.availWidth;
+      var frameWidth = target.value || w.innerWidth;
       var text = target.selectedOptions[0].text;
-      if (frameWidth > screen.availWidth) {
-        frameWidth = screen.availWidth;
+      if (frameWidth > w.innerWidth) {
+        frameWidth = w.innerWidth;
         text = "MAX";
       }
       _wrapReference.querySelector("iframe").setAttribute("width", frameWidth);
@@ -43,7 +51,6 @@
         _rszFrame.setAttribute("frameborder", 0);
         _rszFrame.className = "__resizer__--frame";
         _rszFrame.setAttribute("src", w.location.pathname + "?noresizer=true");
-        _rszFrame.setAttribute("height", screen.availHeight);
         var _rszSelect = d.createElement("select");
         _rszSelect.className = "__resizer__--select";
         var _rszLabel = d.createElement("span");
@@ -72,10 +79,15 @@
         _rszWrap.appendChild(_rszSelect);
         _rszWrap.appendChild(_rszLabel);
         _rszWrap.appendChild(_rszFrame);
+        _rszFrame.setAttribute(
+          "height",
+          w.innerHeight - _rszFrame.offsetTop - 2
+        );
         body.innerHTML = _rszWrap.outerHTML;
         _wrapReference = d.getElementById(wrapSelector);
         _rszSelect = _wrapReference.querySelector("select");
         onEvent(_rszSelect, "change", onChange);
+        onEvent(w, "resize", onResize);
         this.wrapReference = _wrapReference;
       }
     };
